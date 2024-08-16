@@ -13,10 +13,10 @@ import {
 } from "@mui/material";
 import * as Yup from "yup";
 import { DARK_GREEN } from "../../../utils/constants";
-import { updateShift } from "../../../services/admin/shift";
+import { createBike } from "../../../services/admin/bike";
 
-const Edit = (props) => {
-  const { editModal, setEditModal, modalData, fetchData } = props;
+const Create = (props) => {
+  const { createModal, setCreateModal, fetchData } = props;
   const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
@@ -27,7 +27,7 @@ const Edit = (props) => {
 
   return (
     <Modal
-      open={editModal}
+      open={createModal}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -47,17 +47,17 @@ const Edit = (props) => {
       >
         <Formik
           initialValues={{
-            name: modalData?.name || "",
+            name: "",
           }}
           enableReinitialize
           validationSchema={validationSchema}
           onSubmit={async (values) => {
             dispatch(startLoading());
-            const result = await updateShift(modalData?.id, values);
+            const result = await createBike(values);
             if (result.success) {
               dispatch(stopLoading());
               fetchData();
-              setEditModal(false);
+              setCreateModal(false);
               enqueueSnackbar(result?.data, { variant: "success" });
             } else {
               dispatch(stopLoading());
@@ -82,7 +82,7 @@ const Edit = (props) => {
                       align="center"
                       color={DARK_GREEN}
                     >
-                      Edit Shift
+                      Create Bike
                     </Typography>
                   </Grid>
                   <Grid item md={12}>
@@ -103,7 +103,7 @@ const Edit = (props) => {
                       <Button
                         variant="outlined"
                         onClick={() => {
-                          setEditModal(false);
+                          setCreateModal(false);
                         }}
                         className="cancel__button"
                       >
@@ -128,4 +128,4 @@ const Edit = (props) => {
   );
 };
 
-export default Edit;
+export default Create;

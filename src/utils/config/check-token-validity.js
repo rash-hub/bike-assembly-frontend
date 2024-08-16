@@ -9,18 +9,20 @@ export const checkTokenValidity = async () => {
   }
   const accessTokenData = jwtDecode(accessToken);
   const refreshTokenData = jwtDecode(refreshToken);
+
   if (!moment.unix(accessTokenData.exp).isAfter(moment().add(5, "minutes"))) {
     if (moment.unix(refreshTokenData.exp).isAfter(moment())) {
       return await axios
-        .get(`${process.env.REACT_APP_API_BASE_URL}/admin/auth/refresh-token`, {
-          params: {
-            refreshToken: refreshToken,
-          },
+        .post(`${process.env.REACT_APP_API_BASE_URL}/admin/refresh-token`, {
+          token: refreshToken,
         })
         .then((res) => {
-          const tokenInfo = jwtDecode(res.data.data.token);
-          localStorage.setItem("accessToken", res.data.data.token);
-          localStorage.setItem("refreshToken", res.data.data.refreshToken);
+          const tokenInfo = jwtDecode(res.data.data.authToken.token);
+          localStorage.setItem("accessToken", res.data.data.authToken.token);
+          localStorage.setItem(
+            "refreshToken",
+            res.data.data.refreshToken.token
+          );
           return tokenInfo.data;
         })
         .catch((err) => {
@@ -30,5 +32,6 @@ export const checkTokenValidity = async () => {
       return null;
     }
   }
+
   return accessTokenData.data;
 };

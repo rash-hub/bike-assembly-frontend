@@ -1,10 +1,10 @@
 import adminRootInstance from "../../utils/config/admin-axios-config";
 import { SOMETHING_WENT_WRONG } from "../../utils/constants";
 
-export const fetchShifts = async (page, rowsPerPage, searchValue) => {
+export const fetchBikes = async (page, rowsPerPage, searchValue) => {
   try {
     if (!(page || rowsPerPage || searchValue)) {
-      const response = await adminRootInstance.get(`shifts`);
+      const response = await adminRootInstance.get(`bikes`);
       if (response?.data?.success && response?.data?.data) {
         return {
           success: true,
@@ -18,7 +18,7 @@ export const fetchShifts = async (page, rowsPerPage, searchValue) => {
       }
     } else {
       const response = await adminRootInstance.get(
-        `shifts?page=${
+        `bikes?page=${
           Number(page) + 1
         }&limit=${rowsPerPage}&searchValue=${searchValue}`
       );
@@ -42,9 +42,9 @@ export const fetchShifts = async (page, rowsPerPage, searchValue) => {
   }
 };
 
-export const createShift = async (values) => {
+export const createBike = async (values) => {
   try {
-    const response = await adminRootInstance.post(`shift/`, values);
+    const response = await adminRootInstance.post(`bike/`, values);
     if (response?.data?.success) {
       return {
         success: true,
@@ -64,9 +64,9 @@ export const createShift = async (values) => {
   }
 };
 
-export const updateShift = async (id, values) => {
+export const updateBike = async (id, values) => {
   try {
-    const response = await adminRootInstance.put(`shift/${id}`, values);
+    const response = await adminRootInstance.put(`bike/${id}`, values);
     if (response?.data?.success) {
       return {
         success: true,
@@ -86,9 +86,9 @@ export const updateShift = async (id, values) => {
   }
 };
 
-export const deleteShift = async (id) => {
+export const deleteBike = async (id) => {
   try {
-    const response = await adminRootInstance.delete(`shift/${id}`);
+    const response = await adminRootInstance.delete(`bike/${id}`);
     if (response?.data?.success) {
       return {
         success: true,
@@ -108,9 +108,9 @@ export const deleteShift = async (id) => {
   }
 };
 
-export const fetchAllShifts = async () => {
+export const fetchAllBikes = async () => {
   try {
-    const response = await adminRootInstance.get(`shifts/all`);
+    const response = await adminRootInstance.get(`bikes/all`);
     if (response?.data?.success && response?.data?.data) {
       return {
         success: true,

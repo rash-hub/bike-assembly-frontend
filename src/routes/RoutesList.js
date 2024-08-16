@@ -5,7 +5,7 @@ import Loader from "../components/Common/Loader";
 import NotFound from "../components/Common/NotFound";
 import AdminUserListPage from "../pages/admin/AdminUser/List";
 import EmployeeListPage from "../pages/admin/Employee/List";
-import AdminShiftListPage from "../pages/admin/Shift/List";
+import AdminBikeListPage from "../pages/admin/Bike/List";
 import Login from "../components/Common/Login";
 
 const RoutesList = () => {
@@ -48,14 +48,14 @@ const RoutesList = () => {
             }
           />
         </Route>
-        <Route path="shift">
+        <Route path="bike">
           <Route index element={<Navigate to="all" />} />
           <Route
             path="all"
             element={
               <ProtectedRoute>
                 <Suspense fallback={<Loader />}>
-                  <AdminShiftListPage />
+                  <AdminBikeListPage />
                 </Suspense>
               </ProtectedRoute>
             }

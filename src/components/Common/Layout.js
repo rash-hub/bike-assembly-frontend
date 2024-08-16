@@ -132,16 +132,14 @@ const Layout = ({ children }) => {
       ),
     },
     {
-      name: "Shift",
-      to: "/admin/shift/all",
-      text: "/admin/shift/all",
+      name: "Bike",
+      to: "/admin/bike/all",
+      text: "/admin/bike/all",
       icon: (
         <ListItemIcon>
           <PeopleAltIcon
             sx={{
-              color: isActive({ text: "/admin/shift/all" })
-                ? DARK_GREEN
-                : WHITE,
+              color: isActive({ text: "/admin/bike/all" }) ? DARK_GREEN : WHITE,
               fontSize: 30,
             }}
           />

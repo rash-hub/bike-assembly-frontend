@@ -19,11 +19,11 @@ import { enqueueSnackbar } from "notistack";
 import ConfirmationModal from "../../Common/ConfirmationModal";
 import Edit from "./Edit";
 import Create from "./Create";
-import { deleteShift, fetchShifts } from "../../../services/admin/shift";
+import { deleteBike, fetchBikes } from "../../../services/admin/bike";
 
 const List = () => {
   const dispatch = useDispatch();
-  const [shifts, setShifts] = useState([]);
+  const [bikes, setBikes] = useState([]);
   const [createModal, setCreateModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [modalData, setModalData] = useState(null);
@@ -42,14 +42,14 @@ const List = () => {
   const fetchData = useCallback(
     async (pageVal) => {
       dispatch(startLoading());
-      const response = await fetchShifts(
+      const response = await fetchBikes(
         pageVal || page,
         rowsPerPage,
         searchValue
       );
       if (response.success && response.data) {
         setTotalRecords(response?.data?.pagination?.totalItems || 0);
-        setShifts(response?.data?.shifts);
+        setBikes(response?.data?.bikes);
         dispatch(stopLoading());
       } else {
         dispatch(stopLoading());
@@ -67,13 +67,13 @@ const List = () => {
     setCreateModal(true);
   };
 
-  const onEdit = (shift) => {
+  const onEdit = (bike) => {
     setEditModal(true);
-    setModalData(shift);
+    setModalData(bike);
   };
 
-  const onDelete = (shift) => {
-    setDeleteId(shift.id);
+  const onDelete = (bike) => {
+    setDeleteId(bike.id);
     setConfirmationMessage(DELETE_MESSAGE);
     dispatch(openConfirmationModal());
   };
@@ -91,7 +91,7 @@ const List = () => {
 
   const onDeleteHandler = async () => {
     dispatch(startLoading());
-    const response = await deleteShift(deleteId);
+    const response = await deleteBike(deleteId);
     fetchData();
     if (response.success && response.data) {
       dispatch(stopLoading());
@@ -149,7 +149,7 @@ const List = () => {
       <DataTable
         from="gradeList"
         headers={[{ label: "Name" }, { label: "Actions" }]}
-        data={shifts?.map((row) => {
+        data={bikes?.map((row) => {
           return {
             id: row?.id,
             commonColumns: [row?.name],
