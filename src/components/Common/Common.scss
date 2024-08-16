@@ -1,0 +1,191 @@
+@import "../../utils/style-constants";
+
+.Layout__container {
+  display: flex;
+}
+
+.Layout__header__container {
+  background-color: darkgreen;
+  color: #d2f5ff;
+}
+
+.Layout__header__toolbar {
+  padding-right: 24px;
+  background-color: darkgreen;
+  color: #d2f5ff;
+}
+
+.Layout__header__logo__container {
+  flex-grow: 1;
+  font-size: 30;
+  letter-spacing: 3px;
+  background-color: darkgreen;
+  color: #d2f5ff;
+}
+
+.Layout__drawer {
+  height: 100vh;
+}
+
+.Layout__home__icon__container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+}
+
+.Layout__home__icon {
+  cursor: pointer;
+}
+
+.Layout__main__component__container {
+  flex-grow: 1;
+  height: 100vh;
+  overflow: auto;
+}
+
+.NotFound__link {
+  text-decoration: none;
+}
+
+.Tab__container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.Login {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: linear-gradient(111deg, darkgreen 20%, green 50%, lightgreen 90%);
+}
+
+.Login__header {
+  color: darkgreen;
+  font-weight: bold;
+  font-size: 35px;
+  padding: 10px;
+  text-align: center;
+}
+
+.Login__form {
+  height: 300px;
+  width: 480px;
+  background: #ffffff;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 25px 0px;
+  position: relative;
+}
+
+.Login__input__Wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.Login__input__field {
+  width: 400px;
+  height: 40px;
+  border-radius: 0.25em;
+  text-align: center;
+  font-size: 1em;
+  border: 1px soliddarkgreen;
+  border-radius: 1em;
+  &::placeholder {
+    font-size: 15px;
+  }
+  &:focus {
+    outline-color: darkgreen;
+  }
+}
+
+.Login__input__error {
+  position: absolute;
+  bottom: -15px;
+}
+
+.Login__eyeicon__wrapper {
+  position: relative;
+}
+
+.Login__eyeicon__button {
+  background: none;
+  color: darkgreen;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 4px;
+  top: 8px;
+}
+
+.Login__submit__button {
+  width: 100px;
+  height: 50px;
+  flex-shrink: 0;
+  color: $white;
+  text-align: center;
+  border-radius: 30px;
+  background: darkgreen;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+}
+
+.Login__error__span {
+  position: absolute;
+  bottom: 10px;
+}
+
+.TableComp__table {
+  border: 1px solid #e0e0e0;
+  min-width: 650px;
+}
+
+.TableComp__table__header {
+  font-weight: bold !important;
+}
+
+.TableComp__table__header__Actions {
+  font-weight: bold !important;
+  padding-left: 25px !important;
+}
+
+.TableComp__table__cell {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.TableComp__table__cell__Content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .desc-data {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    white-space: pre-wrap;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+  }
+}
+
+.TableComp__table__cell__badge {
+  margin-left: 32px;
+  span {
+    white-space: nowrap;
+  }
+}
+
+.TableComp__table__icon {
+  font-size: 25px;
+}

@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  font-family: "DM Sans", sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.MuiFormControl-root label.Mui-focused {
+  color: darkgreen !important;
+}
+
+.MuiFormControl-root:hover,
+.MuiFormControl-root:focus,
+.MuiFormControl-root:focus-within,
+.MuiFormControl-root:active {
+  &:not(.Mui-error) {
+    label {
+      color: darkgreen !important;
+    }
+  }
+}
+
+.MuiFormControl-root,
+.MuiFormControl-root:hover,
+.MuiFormControl-root:focus,
+.MuiFormControl-root:focus-within,
+.MuiFormControl-root:active {
+  &:has(.Mui-error) {
+    label {
+      color: #d32f2f !important;
+    }
+  }
+}
+
+.MuiFormControl-root:hover,
+.MuiInputBase-root.Mui-focused {
+  &:not(.Mui-error) {
+    fieldset {
+      border-color: darkgreen !important;
+    }
+  }
+}
+
+.MuiFormControl-root,
+.MuiFormControl-root:hover,
+.MuiInputBase-root.Mui-focused {
+  &:has(.Mui-error) {
+    fieldset {
+      border-color: #d32f2f !important;
+    }
+  }
+}
+
+.MuiRadio-root.Mui-checked {
+  color: darkgreen !important;
+}
+
+.form {
+  .MuiFormControl-root {
+    height: 60px;
+  }
+}
+
+.container {
+  margin: 30px 30px;
+  padding: 20px;
+}
+
+.submit__button {
+  background-color: darkgreen !important;
+}
+
+.submit__button:hover {
+  background-color: #004d00 !important;
+}
+
+.cancel__button {
+  border-color: darkgreen !important;
+  color: darkgreen !important;
+}
+
+.cancel__button:hover {
+  border-color: #004d00 !important;
+  background-color: #f0f0f0 !important;
+}
