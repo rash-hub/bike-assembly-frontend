@@ -6,6 +6,7 @@ import NotFound from "../components/Common/NotFound";
 import AdminUserListPage from "../pages/admin/AdminUser/List";
 import EmployeeListPage from "../pages/admin/Employee/List";
 import AdminBikeListPage from "../pages/admin/Bike/List";
+import AdminBikeAssemblyListPage from "../pages/admin/BikeAssembly/List";
 import Login from "../components/Common/Login";
 
 const RoutesList = () => {
@@ -56,6 +57,19 @@ const RoutesList = () => {
               <ProtectedRoute>
                 <Suspense fallback={<Loader />}>
                   <AdminBikeListPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+        <Route path="bike-assembly">
+          <Route index element={<Navigate to="all" />} />
+          <Route
+            path="all"
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<Loader />}>
+                  <AdminBikeAssemblyListPage />
                 </Suspense>
               </ProtectedRoute>
             }

@@ -1,4 +1,14 @@
-import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  Paper,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import { startLoading, stopLoading } from "../../redux/Slices/CommonSlice";
@@ -26,6 +36,7 @@ const Login = () => {
       initialValues={{
         email: "",
         password: "",
+        isAdmin: true,
       }}
       enableReinitialize
       validationSchema={validationSchema}
@@ -39,7 +50,12 @@ const Login = () => {
             "refreshToken",
             response?.data?.refreshToken?.token
           );
-          navigate(`/admin/admin-user/all`);
+          localStorage.setItem("user", JSON.stringify(response?.data?.user));
+          navigate(
+            response?.data?.user.title === "EMPLOYEE"
+              ? "/admin/bike-assembly/all"
+              : `/admin/admin-user/all`
+          );
         } else {
           dispatch(stopLoading());
           enqueueSnackbar(response?.data, { variant: "error" });
@@ -69,6 +85,28 @@ const Login = () => {
                     <Typography variant="h4" component="h2" color={DARK_GREEN}>
                       Login
                     </Typography>
+                  </Grid>
+                  <Grid item md={12} display={"flex"} justifyContent={"center"}>
+                    <FormControl>
+                      <RadioGroup
+                        row
+                        aria-labelledby="isAdmin-label"
+                        name="isAdmin"
+                        onChange={handleChange}
+                        defaultValue={true}
+                      >
+                        <FormControlLabel
+                          value={true}
+                          control={<Radio />}
+                          label="Admin"
+                        />
+                        <FormControlLabel
+                          value={false}
+                          control={<Radio />}
+                          label="Employee"
+                        />
+                      </RadioGroup>
+                    </FormControl>
                   </Grid>
                   <Grid item md={12}>
                     <TextField

@@ -15,7 +15,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import "./Common.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logoutHandler } from "../../redux/Slices/AuthSlice";
 import { DARK_GREEN, WHITE } from "../../utils/constants";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
@@ -83,7 +83,6 @@ const defaultTheme = createTheme({
 const Layout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = useSelector((store) => store.auth.user);
   const dispatch = useDispatch();
 
   const logoutUser = () => {
@@ -96,57 +95,99 @@ const Layout = ({ children }) => {
     return location.pathname.includes(menuItem.text);
   };
 
-  const menuItems = [
-    {
-      name: "Admin",
-      to: "/admin/admin-user/all",
-      text: "/admin/admin-user/all",
-      icon: (
-        <ListItemIcon>
-          <ManageAccountsIcon
-            sx={{
-              color: isActive({ text: "/admin/admin-user/all" })
-                ? DARK_GREEN
-                : WHITE,
-              fontSize: 30,
-            }}
-          />
-        </ListItemIcon>
-      ),
-    },
-    {
-      name: "Employee",
-      to: "/admin/employee/all",
-      text: "/admin/employee/all",
-      icon: (
-        <ListItemIcon>
-          <ManageAccountsIcon
-            sx={{
-              color: isActive({ text: "/admin/employee/all" })
-                ? DARK_GREEN
-                : WHITE,
-              fontSize: 30,
-            }}
-          />
-        </ListItemIcon>
-      ),
-    },
-    {
-      name: "Bike",
-      to: "/admin/bike/all",
-      text: "/admin/bike/all",
-      icon: (
-        <ListItemIcon>
-          <PeopleAltIcon
-            sx={{
-              color: isActive({ text: "/admin/bike/all" }) ? DARK_GREEN : WHITE,
-              fontSize: 30,
-            }}
-          />
-        </ListItemIcon>
-      ),
-    },
-  ];
+  const userData = JSON.parse(localStorage.getItem("user"));
+
+  const menuItems =
+    userData.title === "EMPLOYEE"
+      ? [
+          {
+            name: "Bike Assembly",
+            to: "/admin/bike-assembly/all",
+            text: "/admin/bike-assembly/all",
+            icon: (
+              <ListItemIcon>
+                <PeopleAltIcon
+                  sx={{
+                    color: isActive({ text: "/admin/bike-assembly/all" })
+                      ? DARK_GREEN
+                      : WHITE,
+                    fontSize: 30,
+                  }}
+                />
+              </ListItemIcon>
+            ),
+          },
+        ]
+      : [
+          {
+            name: "Admin",
+            to: "/admin/admin-user/all",
+            text: "/admin/admin-user/all",
+            icon: (
+              <ListItemIcon>
+                <ManageAccountsIcon
+                  sx={{
+                    color: isActive({ text: "/admin/admin-user/all" })
+                      ? DARK_GREEN
+                      : WHITE,
+                    fontSize: 30,
+                  }}
+                />
+              </ListItemIcon>
+            ),
+          },
+          {
+            name: "Employee",
+            to: "/admin/employee/all",
+            text: "/admin/employee/all",
+            icon: (
+              <ListItemIcon>
+                <ManageAccountsIcon
+                  sx={{
+                    color: isActive({ text: "/admin/employee/all" })
+                      ? DARK_GREEN
+                      : WHITE,
+                    fontSize: 30,
+                  }}
+                />
+              </ListItemIcon>
+            ),
+          },
+          {
+            name: "Bike",
+            to: "/admin/bike/all",
+            text: "/admin/bike/all",
+            icon: (
+              <ListItemIcon>
+                <PeopleAltIcon
+                  sx={{
+                    color: isActive({ text: "/admin/bike/all" })
+                      ? DARK_GREEN
+                      : WHITE,
+                    fontSize: 30,
+                  }}
+                />
+              </ListItemIcon>
+            ),
+          },
+          {
+            name: "Bike Assembly",
+            to: "/admin/bike-assembly/all",
+            text: "/admin/bike-assembly/all",
+            icon: (
+              <ListItemIcon>
+                <PeopleAltIcon
+                  sx={{
+                    color: isActive({ text: "/admin/bike-assembly/all" })
+                      ? DARK_GREEN
+                      : WHITE,
+                    fontSize: 30,
+                  }}
+                />
+              </ListItemIcon>
+            ),
+          },
+        ];
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -169,8 +210,8 @@ const Layout = ({ children }) => {
             </Typography>
             <AccountBoxIcon />
             <Typography padding={2}>
-              {`${user?.firstName}${
-                user?.lastName ? " " + user?.lastName : ""
+              {`${userData?.firstName}${
+                userData?.lastName ? " " + userData?.lastName : ""
               }`}
             </Typography>
             <IconButton color="inherit" onClick={logoutUser}>

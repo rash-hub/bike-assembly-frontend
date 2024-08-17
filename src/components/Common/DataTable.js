@@ -27,6 +27,8 @@ const DataTable = (props) => {
     handleChangeRowsPerPage,
   } = props;
 
+  const userData = JSON.parse(localStorage.getItem("user"));
+
   return (
     <>
       <Table className="TableComp__table">
@@ -66,28 +68,32 @@ const DataTable = (props) => {
                     </Tooltip>
                   </TableCell>
                 ))}
-                <TableCell sx={{ whiteSpace: "nowrap" }}>
-                  {from !== "gradeList" && from !== "subjectList" && (
-                    <IconButton onClick={() => onView(row?.data)}>
-                      <Tooltip title={"View"} placement="top" arrow>
-                        <VisibilityIcon className="TableComp__table__icon" />
+                {from === "bikeAssemblyList" &&
+                userData.title !== "EMPLOYEE" ? null : (
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>
+                    {from === "bikeAssemblyList" &&
+                    userData.title === "EMPLOYEE" ? null : (
+                      <IconButton onClick={() => onView(row?.data)}>
+                        <Tooltip title={"View"} placement="top" arrow>
+                          <VisibilityIcon className="TableComp__table__icon" />
+                        </Tooltip>
+                      </IconButton>
+                    )}
+                    <IconButton onClick={() => onEdit(row?.data)}>
+                      <Tooltip title={"Edit"} placement="top" arrow>
+                        <EditIcon className="TableComp__table__icon" />
                       </Tooltip>
                     </IconButton>
-                  )}
-                  <IconButton onClick={() => onEdit(row?.data)}>
-                    <Tooltip title={"Edit"} placement="top" arrow>
-                      <EditIcon className="TableComp__table__icon" />
-                    </Tooltip>
-                  </IconButton>
-                  <IconButton
-                    onClick={() => onDelete(row?.data)}
-                    disabled={row?.id === 1 && from === "adminUserList"}
-                  >
-                    <Tooltip title={"Delete"} placement="top" arrow>
-                      <DeleteIcon className="TableComp__table__icon" />
-                    </Tooltip>
-                  </IconButton>
-                </TableCell>
+                    <IconButton
+                      onClick={() => onDelete(row?.data)}
+                      disabled={row?.id === 1 && from === "adminUserList"}
+                    >
+                      <Tooltip title={"Delete"} placement="top" arrow>
+                        <DeleteIcon className="TableComp__table__icon" />
+                      </Tooltip>
+                    </IconButton>
+                  </TableCell>
+                )}
               </TableRow>
             ))
           )}

@@ -19,11 +19,14 @@ import { enqueueSnackbar } from "notistack";
 import ConfirmationModal from "../../Common/ConfirmationModal";
 import Edit from "./Edit";
 import Create from "./Create";
-import { deleteBike, fetchBikes } from "../../../services/admin/bike";
+import {
+  deleteBikeAssembly,
+  fetchBikeAssembly,
+} from "../../../services/admin/bike-assembly";
 
 const List = () => {
   const dispatch = useDispatch();
-  const [bikes, setBikes] = useState([]);
+  const [bikeAssembly, setBikeAssembly] = useState([]);
   const [createModal, setCreateModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [modalData, setModalData] = useState(null);
@@ -42,14 +45,14 @@ const List = () => {
   const fetchData = useCallback(
     async (pageVal) => {
       dispatch(startLoading());
-      const response = await fetchBikes(
+      const response = await fetchBikeAssembly(
         pageVal || page,
         rowsPerPage,
         searchValue
       );
       if (response.success && response.data) {
         setTotalRecords(response?.data?.pagination?.totalItems || 0);
-        setBikes(response?.data?.bikes);
+        setBikeAssembly(response?.data?.bikeAssembly);
         dispatch(stopLoading());
       } else {
         dispatch(stopLoading());
@@ -67,13 +70,13 @@ const List = () => {
     setCreateModal(true);
   };
 
-  const onEdit = (bike) => {
+  const onEdit = (bikeAssembly) => {
     setEditModal(true);
-    setModalData(bike);
+    setModalData(bikeAssembly);
   };
 
-  const onDelete = (bike) => {
-    setDeleteId(bike.id);
+  const onDelete = (bikeAssembly) => {
+    setDeleteId(bikeAssembly.id);
     setConfirmationMessage(DELETE_MESSAGE);
     dispatch(openConfirmationModal());
   };
@@ -91,7 +94,7 @@ const List = () => {
 
   const onDeleteHandler = async () => {
     dispatch(startLoading());
-    const response = await deleteBike(deleteId);
+    const response = await deleteBikeAssembly(deleteId);
     fetchData();
     if (response.success && response.data) {
       dispatch(stopLoading());
@@ -101,6 +104,8 @@ const List = () => {
       enqueueSnackbar(response.data, { variant: "error" });
     }
   };
+
+  const userData = JSON.parse(localStorage.getItem("user"));
 
   return (
     <Paper className="container" elevation={4}>
@@ -125,7 +130,7 @@ const List = () => {
               borderRadius: "4px",
               width: "100%",
             }}
-            placeholder="Search by name"
+            placeholder="Search by bike name, employee first name, employee last name"
             size="small"
             onChange={(e) => setSearchValue(e.target.value.trim())}
             startAdornment={
@@ -135,24 +140,43 @@ const List = () => {
             }
           />
         </Grid>
-        <Grid item>
-          <Button
-            variant="contained"
-            className="submit__button"
-            onClick={onCreate}
-          >
-            + Add
-          </Button>
-        </Grid>
+        {userData?.title === "EMPLOYEE" && (
+          <Grid item>
+            <Button
+              variant="contained"
+              className="submit__button"
+              onClick={onCreate}
+            >
+              + Add
+            </Button>
+          </Grid>
+        )}
       </Grid>
 
       <DataTable
-        from="bikeList"
-        headers={[{ label: "Name" }, { label: "Actions" }]}
-        data={bikes?.map((row) => {
+        from="bikeAssemblyList"
+        headers={
+          userData?.title === "EMPLOYEE"
+            ? [
+                { label: "Bike" },
+                { label: "Employee" },
+                { label: "Time Taken" },
+                { label: "Actions" },
+              ]
+            : [
+                { label: "Bike" },
+                { label: "Employee" },
+                { label: "Time Taken" },
+              ]
+        }
+        data={bikeAssembly?.map((row) => {
           return {
             id: row?.id,
-            commonColumns: [row?.name],
+            commonColumns: [
+              row?.bike?.name,
+              row?.employee?.firstName + " " + row?.employee?.lastName,
+              row?.timeTaken,
+            ],
             data: row,
           };
         })}
