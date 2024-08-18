@@ -17,7 +17,7 @@ import { enqueueSnackbar } from "notistack";
 import "./Common.scss";
 import * as Yup from "yup";
 import { DARK_GREEN } from "../../utils/constants";
-import { adminLogin } from "../../services/admin/login";
+import { adminLogin } from "../../services/login";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -53,8 +53,8 @@ const Login = () => {
           localStorage.setItem("user", JSON.stringify(response?.data?.user));
           navigate(
             response?.data?.user.title === "EMPLOYEE"
-              ? "/admin/bike-assembly/all"
-              : `/admin/admin-user/all`
+              ? "/employee/bike-assembly/all"
+              : `/admin/bike-assembly/all`
           );
         } else {
           dispatch(stopLoading());

@@ -72,7 +72,8 @@ const DataTable = (props) => {
                 userData.title !== "EMPLOYEE" ? null : (
                   <TableCell sx={{ whiteSpace: "nowrap" }}>
                     {from === "bikeAssemblyList" &&
-                    userData.title === "EMPLOYEE" ? null : (
+                    userData.title === "EMPLOYEE" ? null : from ===
+                      "bikeList" ? null : (
                       <IconButton onClick={() => onView(row?.data)}>
                         <Tooltip title={"View"} placement="top" arrow>
                           <VisibilityIcon className="TableComp__table__icon" />

@@ -13,7 +13,7 @@ export const checkTokenValidity = async () => {
   if (!moment.unix(accessTokenData.exp).isAfter(moment().add(5, "minutes"))) {
     if (moment.unix(refreshTokenData.exp).isAfter(moment())) {
       return await axios
-        .post(`${process.env.REACT_APP_API_BASE_URL}/admin/refresh-token`, {
+        .post(`${process.env.REACT_APP_API_BASE_URL}/refresh-token`, {
           token: refreshToken,
         })
         .then((res) => {

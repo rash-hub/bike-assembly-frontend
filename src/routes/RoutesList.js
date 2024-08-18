@@ -3,10 +3,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Loader from "../components/Common/Loader";
 import NotFound from "../components/Common/NotFound";
-import AdminUserListPage from "../pages/admin/AdminUser/List";
-import EmployeeListPage from "../pages/admin/Employee/List";
-import AdminBikeListPage from "../pages/admin/Bike/List";
-import AdminBikeAssemblyListPage from "../pages/admin/BikeAssembly/List";
+import AdminUserListPage from "../pages/AdminUser/List";
+import EmployeeListPage from "../pages/Employee/List";
+import AdminBikeListPage from "../pages/Bike/List";
+import AdminBikeAssemblyListPage from "../pages/BikeAssembly/List";
 import Login from "../components/Common/Login";
 
 const RoutesList = () => {
@@ -22,7 +22,7 @@ const RoutesList = () => {
         }
       />
       <Route path="/admin">
-        <Route index element={<Navigate to="admin-user/all" />} />
+        <Route index element={<Navigate to="bike-assembly/all" />} />
         <Route path="admin-user">
           <Route index element={<Navigate to="all" />} />
           <Route
@@ -62,6 +62,22 @@ const RoutesList = () => {
             }
           />
         </Route>
+        <Route path="bike-assembly">
+          <Route index element={<Navigate to="all" />} />
+          <Route
+            path="all"
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<Loader />}>
+                  <AdminBikeAssemblyListPage />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+      </Route>
+      <Route path="/employee">
+        <Route index element={<Navigate to="bike-assembly/all" />} />
         <Route path="bike-assembly">
           <Route index element={<Navigate to="all" />} />
           <Route

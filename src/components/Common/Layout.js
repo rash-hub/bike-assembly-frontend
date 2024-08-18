@@ -102,6 +102,25 @@ const Layout = ({ children }) => {
       ? [
           {
             name: "Bike Assembly",
+            to: "/employee/bike-assembly/all",
+            text: "/employee/bike-assembly/all",
+            icon: (
+              <ListItemIcon>
+                <PeopleAltIcon
+                  sx={{
+                    color: isActive({ text: "/employee/bike-assembly/all" })
+                      ? DARK_GREEN
+                      : WHITE,
+                    fontSize: 30,
+                  }}
+                />
+              </ListItemIcon>
+            ),
+          },
+        ]
+      : [
+          {
+            name: "Dashboard",
             to: "/admin/bike-assembly/all",
             text: "/admin/bike-assembly/all",
             icon: (
@@ -117,8 +136,6 @@ const Layout = ({ children }) => {
               </ListItemIcon>
             ),
           },
-        ]
-      : [
           {
             name: "Admin",
             to: "/admin/admin-user/all",
@@ -170,23 +187,6 @@ const Layout = ({ children }) => {
               </ListItemIcon>
             ),
           },
-          {
-            name: "Bike Assembly",
-            to: "/admin/bike-assembly/all",
-            text: "/admin/bike-assembly/all",
-            icon: (
-              <ListItemIcon>
-                <PeopleAltIcon
-                  sx={{
-                    color: isActive({ text: "/admin/bike-assembly/all" })
-                      ? DARK_GREEN
-                      : WHITE,
-                    fontSize: 30,
-                  }}
-                />
-              </ListItemIcon>
-            ),
-          },
         ];
 
   return (
@@ -206,7 +206,7 @@ const Layout = ({ children }) => {
               noWrap
               className="Layout__header__logo__container"
             >
-              Bike Assembly
+              Bike Assembly Application
             </Typography>
             <AccountBoxIcon />
             <Typography padding={2}>
