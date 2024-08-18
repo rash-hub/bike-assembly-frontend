@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Modal, Tooltip, Typography } from "@mui/material";
 import React from "react";
-import { DARK_GREEN } from "../../../utils/constants";
+import { DARK_GREEN } from "../../utils/constants";
 import moment from "moment";
 
 const View = (props) => {

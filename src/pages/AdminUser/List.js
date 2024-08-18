@@ -1,4 +1,4 @@
-import List from "../../components/Admin/AdminUser/List.js";
+import List from "../../components/AdminUser/List.js";
 import React from "react";
 import Layout from "../../components/Common/Layout.js";
 

@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
-import { startLoading, stopLoading } from "../../../redux/Slices/CommonSlice";
+import { startLoading, stopLoading } from "../../redux/Slices/CommonSlice";
 import { enqueueSnackbar } from "notistack";
 import {
   Box,
@@ -12,8 +12,8 @@ import {
   Typography,
 } from "@mui/material";
 import * as Yup from "yup";
-import { createEmployee } from "../../../services/employee";
-import { DARK_GREEN } from "../../../utils/constants";
+import { createEmployee } from "../../services/employee";
+import { DARK_GREEN } from "../../utils/constants";
 
 const Create = (props) => {
   const { createModal, setCreateModal, fetchData } = props;

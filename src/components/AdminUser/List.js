@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { DARK_GREEN, DELETE_MESSAGE } from "../../../utils/constants";
+import { DARK_GREEN, DELETE_MESSAGE } from "../../utils/constants";
 import {
   Button,
   Grid,
@@ -8,19 +8,16 @@ import {
   Paper,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import DataTable from "../../Common/DataTable";
+import DataTable from "../Common/DataTable";
 import {
   openConfirmationModal,
   startLoading,
   stopLoading,
-} from "../../../redux/Slices/CommonSlice";
+} from "../../redux/Slices/CommonSlice";
 import { useDispatch } from "react-redux";
-import {
-  deleteAdminUser,
-  fetchAllAdminUsers,
-} from "../../../services/admin-user";
+import { deleteAdminUser, fetchAllAdminUsers } from "../../services/admin-user";
 import { enqueueSnackbar } from "notistack";
-import ConfirmationModal from "../../Common/ConfirmationModal";
+import ConfirmationModal from "../Common/ConfirmationModal";
 import View from "./View";
 import Edit from "./Edit";
 import Create from "./Create";
