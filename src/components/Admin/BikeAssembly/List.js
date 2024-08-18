@@ -6,6 +6,9 @@ import {
   InputAdornment,
   OutlinedInput,
   Paper,
+  Card,
+  CardContent,
+  TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import DataTable from "../../Common/DataTable";
@@ -23,6 +26,8 @@ import {
   deleteBikeAssembly,
   fetchBikeAssembly,
 } from "../../../services/admin/bike-assembly";
+import { PieChart } from "@mui/x-charts/PieChart";
+import dayjs from "dayjs";
 
 const List = () => {
   const dispatch = useDispatch();
@@ -36,30 +41,53 @@ const List = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
   const [searchValue, setSearchValue] = useState("");
+  const [from, setFrom] = useState(dayjs().subtract(7, "days"));
+  const [to, setTo] = useState(dayjs());
   const rowsPerPageRef = useRef(rowsPerPage);
-
+  const [data, setPieData] = useState([]);
+  const [error, setError] = useState("");
   useEffect(() => {
     rowsPerPageRef.current = rowsPerPage;
   }, [rowsPerPage]);
 
   const fetchData = useCallback(
     async (pageVal) => {
-      dispatch(startLoading());
-      const response = await fetchBikeAssembly(
-        pageVal || page,
-        rowsPerPage,
-        searchValue
-      );
-      if (response.success && response.data) {
-        setTotalRecords(response?.data?.pagination?.totalItems || 0);
-        setBikeAssembly(response?.data?.bikeAssembly);
-        dispatch(stopLoading());
-      } else {
-        dispatch(stopLoading());
-        enqueueSnackbar(response.data, { variant: "error" });
+      if (!error) {
+        dispatch(startLoading());
+        const response = await fetchBikeAssembly(
+          pageVal || page,
+          rowsPerPage,
+          searchValue,
+          from,
+          to
+        );
+        if (response.success && response.data) {
+          setTotalRecords(response?.data?.pagination?.totalItems || 0);
+          setBikeAssembly(response?.data?.bikeAssembly);
+          const responseData = response?.data?.bikeAssembly;
+          const result = Object.values(
+            responseData.reduce((acc, item) => {
+              const { id, firstName, lastName } = item.employee;
+              if (!acc[id]) {
+                acc[id] = {
+                  id,
+                  label: `${firstName} ${lastName}`,
+                  value: 0,
+                };
+              }
+              acc[id].value += 1;
+              return acc;
+            }, {})
+          );
+          setPieData(result);
+          dispatch(stopLoading());
+        } else {
+          dispatch(stopLoading());
+          enqueueSnackbar(response.data, { variant: "error" });
+        }
       }
     },
-    [dispatch, page, rowsPerPage, searchValue]
+    [dispatch, page, rowsPerPage, searchValue, from, to, error]
   );
 
   useEffect(() => {
@@ -140,6 +168,48 @@ const List = () => {
             }
           />
         </Grid>
+        {userData.title !== "EMPLOYEE" && (
+          <Grid item xs={3} md={3}>
+            <TextField
+              type="date"
+              size="small"
+              fullWidth
+              value={from.format("YYYY-MM-DD")}
+              onChange={(e) => {
+                const newFrom = dayjs(e.target.value);
+                setFrom(newFrom);
+                if (newFrom.isAfter(to)) {
+                  setError("'From' date should be earlier than 'To' date");
+                } else {
+                  setError("");
+                }
+              }}
+              error={!!error}
+              helperText={error}
+            ></TextField>
+          </Grid>
+        )}
+        {userData.title !== "EMPLOYEE" && (
+          <Grid item xs={3} md={3}>
+            <TextField
+              type="date"
+              size="small"
+              fullWidth
+              value={to.format("YYYY-MM-DD")}
+              onChange={(e) => {
+                const newTo = dayjs(e.target.value);
+                setTo(newTo);
+                if (from.isAfter(newTo)) {
+                  setError("'From' date should be earlier than 'To' date");
+                } else {
+                  setError("");
+                }
+              }}
+              error={!!error}
+              helperText={error}
+            ></TextField>
+          </Grid>
+        )}
         {userData?.title === "EMPLOYEE" && (
           <Grid item>
             <Button
@@ -152,42 +222,102 @@ const List = () => {
           </Grid>
         )}
       </Grid>
-
-      <DataTable
-        from="bikeAssemblyList"
-        headers={
-          userData?.title === "EMPLOYEE"
-            ? [
-                { label: "Bike" },
-                { label: "Employee" },
-                { label: "Time Taken" },
-                { label: "Actions" },
-              ]
-            : [
-                { label: "Bike" },
-                { label: "Employee" },
-                { label: "Time Taken" },
-              ]
-        }
-        data={bikeAssembly?.map((row) => {
-          return {
-            id: row?.id,
-            commonColumns: [
-              row?.bike?.name,
-              row?.employee?.firstName + " " + row?.employee?.lastName,
-              row?.timeTaken,
-            ],
-            data: row,
-          };
-        })}
-        onEdit={onEdit}
-        onDelete={onDelete}
-        totalRecords={totalRecords}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        handleChangePage={handleChangePage}
-        handleChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+      {userData?.title !== "EMPLOYEE" ? (
+        <>
+          <Grid container spacing={2}>
+            <Grid item xs={5} md={5}>
+              <Card>
+                <CardContent>
+                  <PieChart
+                    series={[
+                      {
+                        data,
+                        labelKey: "label",
+                        valueKey: "value",
+                      },
+                    ]}
+                    width={475}
+                    height={300}
+                  />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={7} md={7}>
+              <DataTable
+                from="bikeAssemblyList"
+                headers={
+                  userData?.title === "EMPLOYEE"
+                    ? [
+                        { label: "Bike" },
+                        { label: "Employee" },
+                        { label: "Time Taken" },
+                        { label: "Actions" },
+                      ]
+                    : [
+                        { label: "Bike" },
+                        { label: "Employee" },
+                        { label: "Time Taken" },
+                      ]
+                }
+                data={bikeAssembly?.map((row) => {
+                  return {
+                    id: row?.id,
+                    commonColumns: [
+                      row?.bike?.name,
+                      row?.employee?.firstName + " " + row?.employee?.lastName,
+                      row?.timeTaken,
+                    ],
+                    data: row,
+                  };
+                })}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                totalRecords={totalRecords}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                handleChangePage={handleChangePage}
+                handleChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+            </Grid>
+          </Grid>
+        </>
+      ) : (
+        <DataTable
+          from="bikeAssemblyList"
+          headers={
+            userData?.title === "EMPLOYEE"
+              ? [
+                  { label: "Bike" },
+                  { label: "Employee" },
+                  { label: "Time Taken" },
+                  { label: "Actions" },
+                ]
+              : [
+                  { label: "Bike" },
+                  { label: "Employee" },
+                  { label: "Time Taken" },
+                ]
+          }
+          data={bikeAssembly?.map((row) => {
+            return {
+              id: row?.id,
+              commonColumns: [
+                row?.bike?.name,
+                row?.employee?.firstName + " " + row?.employee?.lastName,
+                row?.timeTaken,
+              ],
+              data: row,
+            };
+          })}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          totalRecords={totalRecords}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          handleChangePage={handleChangePage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      )}
       <ConfirmationModal
         message={confirmationMessage}
         onOkHandler={onDeleteHandler}

@@ -119,11 +119,8 @@ const Create = (props) => {
                         onBlur={handleBlur}
                       >
                         {bikes.map((bike) => (
-                          <MenuItem
-                            key={bike?.name?.toUpperCase()}
-                            value={bike?.id}
-                          >
-                            {bike?.name?.toUpperCase()}
+                          <MenuItem key={bike?.name} value={bike?.id}>
+                            {bike?.name}
                           </MenuItem>
                         ))}
                       </Select>

@@ -1,38 +1,29 @@
 import adminRootInstance from "../../utils/config/admin-axios-config";
 import { SOMETHING_WENT_WRONG } from "../../utils/constants";
 
-export const fetchBikeAssembly = async (page, rowsPerPage, searchValue) => {
+export const fetchBikeAssembly = async (
+  page,
+  rowsPerPage,
+  searchValue,
+  from,
+  to
+) => {
   try {
-    if (!(page || rowsPerPage || searchValue)) {
-      const response = await adminRootInstance.get(`bike-assemblies`);
-      if (response?.data?.success && response?.data?.data) {
-        return {
-          success: true,
-          data: response?.data?.data,
-        };
-      } else {
-        return {
-          success: false,
-          data: response?.data?.message || SOMETHING_WENT_WRONG,
-        };
-      }
+    const response = await adminRootInstance.get(
+      `bike-assemblies?page=${
+        Number(page) + 1
+      }&limit=${rowsPerPage}&searchValue=${searchValue}&from=${from}&to=${to}`
+    );
+    if (response?.data?.success && response?.data?.data) {
+      return {
+        success: true,
+        data: response?.data?.data,
+      };
     } else {
-      const response = await adminRootInstance.get(
-        `bike-assemblies?page=${
-          Number(page) + 1
-        }&limit=${rowsPerPage}&searchValue=${searchValue}`
-      );
-      if (response?.data?.success && response?.data?.data) {
-        return {
-          success: true,
-          data: response?.data?.data,
-        };
-      } else {
-        return {
-          success: false,
-          data: response?.data?.message || SOMETHING_WENT_WRONG,
-        };
-      }
+      return {
+        success: false,
+        data: response?.data?.message || SOMETHING_WENT_WRONG,
+      };
     }
   } catch (err) {
     return {
